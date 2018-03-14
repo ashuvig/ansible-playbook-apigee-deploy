@@ -1,0 +1,10 @@
+---
+ansible_ssh_user: ubuntu-desk
+ansible_ssh_pass: admin
+apigee_org: <ORG_NAME>
+apigee_host: "api.enterprise.apigee.com"
+application_name: "API_Query_Header"
+username: "<USER_NAME>:<PASSWORD>"
+env: test
+revisionnumber: 1
+

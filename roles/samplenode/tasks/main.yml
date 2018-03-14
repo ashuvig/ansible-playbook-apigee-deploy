@@ -1,0 +1,30 @@
+---
+  - name: listing environmnets from Apigee
+    shell: 'curl  -X "GET" "https://{{ apigee_host }}/v1/o/{{ apigee_org }}/environments" -u {{ username }}'
+    register: apigee_return
+  - debug: msg="{{ apigee_return.stdout }}"
+
+  - name: Download Sample Proxy
+    get_url:
+      url: https://community.apigee.com/storage/attachments/2007-apiproxy-query-header.zip
+      dest: /tmp/2007-apiproxy-query-header.zip    
+    register: urlresult
+  - debug: msg="{{ urlresult }}"
+
+  - name: Uploading APIs to cloud APIGEE
+    shell: 'curl -k -v -X "POST" "https://{{ apigee_host }}/v1/o/{{ apigee_org }}/apis?action=import&name={{ application_name }}" \
+	         -u {{ username }} \
+		 -T /tmp/2007-apiproxy-query-header.zip \ 
+		 -H "Content-Type: application/octet-stream" '
+    register: apigee_return
+  - debug: msg="{{ apigee_return.stdout }}"
+
+  - name: Deploy APIs To Apigee
+    shell: 'curl  -X "POST" "https://{{ apigee_host }}/v1/o/{{ apigee_org }}/e/{{ env }}/apis/{{ application_name }}/revisions/{{ revisionnumber }}/deployments" -u {{ username }}'
+    register: apigee_return
+  - debug: msg="{{ apigee_return.stdout }}"
+
+  - name: listing APIs from Apigee
+    shell: 'curl  -X "GET" "https://{{ apigee_host }}/v1/o/{{ apigee_org }}/apis" -u {{ username }}'
+    register: apigee_return
+  - debug: msg="{{ apigee_return.stdout }}"

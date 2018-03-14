@@ -1,0 +1,4 @@
+---
+- hosts: samplenode
+  roles:
+    - samplenode
